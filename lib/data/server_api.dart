@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:nurse_diary/data/models/category_dto.dart';
-import 'package:nurse_diary/data/models/task_dto.dart';
-import 'package:nurse_diary/domain/repositories/preference_repository.dart';
-import 'package:nurse_diary/domain/services/logger.dart';
+import 'package:nurse_diary/data/categories/models/category_dto.dart';
+import 'package:nurse_diary/data/tasks/models/task_dto.dart';
+import 'package:nurse_diary/domain/preferences/preference_repository.dart';
+import 'package:nurse_diary/domain/shared/logger.dart';
 
 class ServerApi {
   final PreferenceRepository preferenceRepository;
@@ -12,30 +12,21 @@ class ServerApi {
 
   ServerApi({required this.preferenceRepository, required this.logger});
 
-  Future<http.Response> getData(
-    String endpoint, {
-    Map<String, String>? query,
-  }) async {
-    Uri url = Uri.http(preferenceRepository.getServerUrl(), endpoint, query);
-    dynamic response;
+  Future<http.Response> getData(String endpoint, {Map<String, String>? query}) async {
+    try {
+      Uri url = Uri.http(preferenceRepository.getServerUrl(), endpoint, query);
 
-    response = await http.get(url);
+      final response = await http.get(url);
 
-    return response;
-  }
-
-  Future<http.Response> post(String endpoint,
-      {required String body, bool loginHeaders = false, Map<String, dynamic>? queryParams}) async {
-    Uri url = Uri.http(preferenceRepository.getServerUrl(), endpoint, queryParams);
-    http.Response response = http.Response('Error', 404);
-
-    response = await http.post(
-      url,
-      headers: await _getHeaders(),
-      body: body,
-    );
-
-    return response;
+      if (response.statusCode == 200) {
+        return response;
+      } else {
+        throw Exception('HTTP request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      logger.e('An error occurred: $e');
+      rethrow;
+    }
   }
 
   Future<List<CategoryDTO>> getCategories() async {
@@ -55,11 +46,4 @@ class ServerApi {
       return list['tasks'].map<TaskDTO>((e) => TaskDTO.fromJson(e)).toList();
     });
   }
-
-  Future<Map<String, String>> _getHeaders() async => {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Connection': 'close',
-        'TimeZone': DateTime.now().timeZoneOffset.inHours.toString(),
-      };
 }

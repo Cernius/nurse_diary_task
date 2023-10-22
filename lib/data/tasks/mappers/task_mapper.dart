@@ -1,6 +1,6 @@
-import 'package:nurse_diary/data/models/task_dto.dart';
-import 'package:nurse_diary/domain/mappers/mapper.dart';
-import 'package:nurse_diary/domain/models/task.dart';
+import 'package:nurse_diary/data/tasks/models/task_dto.dart';
+import 'package:nurse_diary/domain/shared/mapper.dart';
+import 'package:nurse_diary/domain/tasks/models/task.dart';
 
 class TaskMapper extends Mapper<TaskDTO, Task> {
   @override

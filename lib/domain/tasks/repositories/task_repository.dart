@@ -1,4 +1,4 @@
-import 'package:nurse_diary/domain/models/task.dart';
+import 'package:nurse_diary/domain/tasks/models/task.dart';
 
 abstract class TaskRepository {
   Future<List<Task>> getTasks();

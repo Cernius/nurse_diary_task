@@ -1,5 +1,5 @@
 import 'package:logger/logger.dart' as logger_lib;
-import 'package:nurse_diary/domain/services/logger.dart';
+import 'package:nurse_diary/domain/shared/logger.dart';
 
 class LoggerImpl extends Logger {
 

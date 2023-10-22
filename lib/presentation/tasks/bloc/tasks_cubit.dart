@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nurse_diary/domain/models/task.dart';
-import 'package:nurse_diary/domain/services/task_service.dart';
+import 'package:nurse_diary/domain/tasks/models/task.dart';
+import 'package:nurse_diary/domain/tasks/services/task_service.dart';
 
 part '../state/tasks_state.dart';
 

@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:nurse_diary/domain/models/task.dart';
-import 'package:nurse_diary/domain/repositories/task_repository.dart';
-import 'package:nurse_diary/domain/services/task_service.dart';
+import 'package:nurse_diary/domain/tasks/models/task.dart';
+import 'package:nurse_diary/domain/tasks/repositories/task_repository.dart';
+import 'package:nurse_diary/domain/tasks/services/task_service.dart';
 
 
 class MockTasksRepository extends Mock implements TaskRepository {}

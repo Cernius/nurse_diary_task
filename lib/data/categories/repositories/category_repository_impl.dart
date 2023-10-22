@@ -1,7 +1,7 @@
-import 'package:nurse_diary/data/mappers/category_mapper.dart';
+import 'package:nurse_diary/data/categories/mappers/category_mapper.dart';
 import 'package:nurse_diary/data/server_api.dart';
-import 'package:nurse_diary/domain/models/category.dart';
-import 'package:nurse_diary/domain/repositories/category_repository.dart';
+import 'package:nurse_diary/domain/categories/models/category.dart';
+import 'package:nurse_diary/domain/categories/repositories/category_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CategoryRepositoryImpl extends CategoryRepository {

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:nurse_diary/domain/models/task.dart';
+import 'package:nurse_diary/domain/tasks/models/task.dart';
 import 'package:nurse_diary/presentation/common/widgets/list_tile_widget.dart';
 import 'package:nurse_diary/presentation/tasks/bloc/tasks_cubit.dart';
 

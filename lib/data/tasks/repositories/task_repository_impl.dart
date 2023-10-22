@@ -1,7 +1,7 @@
-import 'package:nurse_diary/data/mappers/task_mapper.dart';
+import 'package:nurse_diary/data/tasks/mappers/task_mapper.dart';
 import 'package:nurse_diary/data/server_api.dart';
-import 'package:nurse_diary/domain/models/task.dart';
-import 'package:nurse_diary/domain/repositories/task_repository.dart';
+import 'package:nurse_diary/domain/tasks/models/task.dart';
+import 'package:nurse_diary/domain/tasks/repositories/task_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskRepositoryImpl extends TaskRepository {

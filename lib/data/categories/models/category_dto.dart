@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'category_dto.g.dart';
+
+@JsonSerializable()
 class CategoryDTO {
   String name;
   String description;
@@ -11,10 +16,5 @@ class CategoryDTO {
     required this.icon,
   });
 
-  factory CategoryDTO.fromJson(Map<String, dynamic> json) => CategoryDTO(
-        name: json['name'],
-        description: json['description'],
-        color: json['color'],
-        icon: json['icon'],
-      );
+  factory CategoryDTO.fromJson(Map<String, dynamic> json) => _$CategoryDTOFromJson(json);
 }

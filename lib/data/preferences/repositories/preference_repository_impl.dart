@@ -1,4 +1,4 @@
-import 'package:nurse_diary/domain/repositories/preference_repository.dart';
+import 'package:nurse_diary/domain/preferences/preference_repository.dart';
 
 class PreferenceRepositoryImpl extends PreferenceRepository {
   @override

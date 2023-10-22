@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:nurse_diary/domain/models/task.dart';
-import 'package:nurse_diary/domain/services/task_service.dart';
+import 'package:nurse_diary/domain/tasks/models/task.dart';
+import 'package:nurse_diary/domain/tasks/services/task_service.dart';
 import 'package:nurse_diary/presentation/tasks/bloc/tasks_cubit.dart';
 
 class MockTasksService extends Mock implements TaskService {}

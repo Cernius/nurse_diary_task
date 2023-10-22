@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nurse_diary/domain/models/category.dart';
+import 'package:nurse_diary/domain/categories/models/category.dart';
 import 'package:nurse_diary/presentation/categories/bloc/categories_cubit.dart';
 import 'package:nurse_diary/presentation/common/widgets/list_tile_widget.dart';
 import 'package:nurse_diary/presentation/tasks/bloc/tasks_cubit.dart';

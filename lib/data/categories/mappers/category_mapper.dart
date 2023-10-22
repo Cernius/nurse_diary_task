@@ -1,7 +1,7 @@
 
-import 'package:nurse_diary/data/models/category_dto.dart';
-import 'package:nurse_diary/domain/mappers/mapper.dart';
-import 'package:nurse_diary/domain/models/category.dart';
+import 'package:nurse_diary/data/categories/models/category_dto.dart';
+import 'package:nurse_diary/domain/categories/models/category.dart';
+import 'package:nurse_diary/domain/shared/mapper.dart';
 import 'package:nurse_diary/presentation/common/utils/extenions.dart';
 
 class CategoryMapper extends Mapper<CategoryDTO, Category> {

@@ -1,16 +1,16 @@
 import 'package:flutter_simple_dependency_injection/injector.dart';
-import 'package:nurse_diary/data/mappers/category_mapper.dart';
-import 'package:nurse_diary/data/mappers/task_mapper.dart';
-import 'package:nurse_diary/data/repositories/category_repository_impl.dart';
-import 'package:nurse_diary/data/repositories/preference_repository_impl.dart';
-import 'package:nurse_diary/data/repositories/task_repository_impl.dart';
+import 'package:nurse_diary/data/categories/mappers/category_mapper.dart';
+import 'package:nurse_diary/data/shared/logger_impl.dart';
+import 'package:nurse_diary/data/tasks/mappers/task_mapper.dart';
+import 'package:nurse_diary/data/categories/repositories/category_repository_impl.dart';
+import 'package:nurse_diary/data/preferences/repositories/preference_repository_impl.dart';
+import 'package:nurse_diary/data/tasks/repositories/task_repository_impl.dart';
 import 'package:nurse_diary/data/server_api.dart';
-import 'package:nurse_diary/data/services/logger_impl.dart';
-import 'package:nurse_diary/domain/repositories/category_repository.dart';
-import 'package:nurse_diary/domain/repositories/preference_repository.dart';
-import 'package:nurse_diary/domain/repositories/task_repository.dart';
-import 'package:nurse_diary/domain/services/logger.dart';
-import 'package:nurse_diary/domain/services/task_service.dart';
+import 'package:nurse_diary/domain/categories/repositories/category_repository.dart';
+import 'package:nurse_diary/domain/preferences/preference_repository.dart';
+import 'package:nurse_diary/domain/shared/logger.dart';
+import 'package:nurse_diary/domain/tasks/repositories/task_repository.dart';
+import 'package:nurse_diary/domain/tasks/services/task_service.dart';
 import 'package:nurse_diary/presentation/categories/bloc/categories_cubit.dart';
 import 'package:nurse_diary/presentation/tasks/bloc/tasks_cubit.dart';
 

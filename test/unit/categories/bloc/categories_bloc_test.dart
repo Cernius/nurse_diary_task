@@ -2,8 +2,8 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:nurse_diary/domain/models/category.dart';
-import 'package:nurse_diary/domain/repositories/category_repository.dart';
+import 'package:nurse_diary/domain/categories/models/category.dart';
+import 'package:nurse_diary/domain/categories/repositories/category_repository.dart';
 import 'package:nurse_diary/presentation/categories/bloc/categories_cubit.dart';
 
 class MockCategoriesRepository extends Mock implements CategoryRepository {}
