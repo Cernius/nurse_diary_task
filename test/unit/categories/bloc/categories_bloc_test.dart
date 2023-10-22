@@ -10,7 +10,7 @@ class MockCategoriesRepository extends Mock implements CategoryRepository {}
 
 void main() {
   group('CategoriesCubit', () {
-    late CategoriesCubit categoriesBloc;
+    late CategoriesCubit categoriesCubit;
     late CategoryRepository repository;
     final categoriesResponse = [
       Category(
@@ -29,18 +29,18 @@ void main() {
 
     setUp(() async {
       repository = MockCategoriesRepository();
-      categoriesBloc = CategoriesCubit(categoryRepository: repository);
+      categoriesCubit = CategoriesCubit(categoryRepository: repository);
     });
 
     test('Initial State is CategoriesInitial', () {
-      expect(categoriesBloc.state, CategoriesInitial());
+      expect(categoriesCubit.state, CategoriesInitial());
     });
 
     group('Get Categories', () {
       blocTest<CategoriesCubit, CategoriesState>(
         'emits [CategoriesLoading, CategoriesLoaded] when successful',
         setUp: () => when(repository.getCategories).thenAnswer((_) async => categoriesResponse),
-        build: () => categoriesBloc,
+        build: () => categoriesCubit,
         act: (bloc) {
           bloc.getCategories();
         },
@@ -53,7 +53,7 @@ void main() {
         'emits [loading, failure] '
         'when getCategories fails',
         setUp: () => when(repository.getCategories).thenThrow(Exception()),
-        build: () => categoriesBloc,
+        build: () => categoriesCubit,
         act: (bloc) {
           bloc.getCategories();
         },
