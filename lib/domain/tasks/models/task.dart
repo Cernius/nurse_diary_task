@@ -1,5 +1,3 @@
-import 'package:equatable/equatable.dart';
-
 class Task   {
   final String title;
   final String description;
