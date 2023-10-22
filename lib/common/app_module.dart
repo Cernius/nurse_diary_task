@@ -10,6 +10,7 @@ import 'package:nurse_diary/domain/repositories/category_repository.dart';
 import 'package:nurse_diary/domain/repositories/preference_repository.dart';
 import 'package:nurse_diary/domain/repositories/task_repository.dart';
 import 'package:nurse_diary/domain/services/logger.dart';
+import 'package:nurse_diary/domain/services/task_service.dart';
 import 'package:nurse_diary/presentation/categories/bloc/categories_cubit.dart';
 import 'package:nurse_diary/presentation/tasks/bloc/tasks_cubit.dart';
 
@@ -17,29 +18,44 @@ class AppModule {
   Injector initialise(Injector injector) {
     injector.map<Logger>(
       (i) => LoggerImpl(),
-      isSingleton: true,
     );
 
-    injector.map<PreferenceRepository>((i) => PreferenceRepositoryImpl(), isSingleton: true);
-    injector.map<ServerApi>((i) => ServerApi(i.get<PreferenceRepository>(), i.get<Logger>()));
+    injector.map<PreferenceRepository>((i) => PreferenceRepositoryImpl());
+    injector.map<ServerApi>(
+      (i) => ServerApi(
+        preferenceRepository: i.get<PreferenceRepository>(),
+        logger: i.get<Logger>(),
+      ),
+    );
     injector.map<CategoryRepository>(
       (i) => CategoryRepositoryImpl(
-        i.get<ServerApi>(),
-        i.get<CategoryMapper>(),
+        serverApi: i.get<ServerApi>(),
+        categoryMapper: i.get<CategoryMapper>(),
       ),
       isSingleton: true,
     );
     injector.map<TaskRepository>(
       (i) => TaskRepositoryImpl(
-        i.get<ServerApi>(),
-        i.get<TaskMapper>(),
+        serverApi: i.get<ServerApi>(),
+        taskMapper: i.get<TaskMapper>(),
       ),
       isSingleton: true,
     );
-    injector.map<CategoriesCubit>((i) => CategoriesCubit(i.get<CategoryRepository>()));
+    injector.map<CategoriesCubit>(
+      (i) => CategoriesCubit(
+        categoryRepository: i.get<CategoryRepository>(),
+      ),
+      isSingleton: true,
+    );
     injector.map<CategoryMapper>((i) => CategoryMapper());
     injector.map<TaskMapper>((i) => TaskMapper());
-    injector.map<TasksCubit>((i) => TasksCubit(i.get<TaskRepository>()), isSingleton: true);
+    injector.map<TaskService>((i) => TaskService(taskRepository: i.get<TaskRepository>()));
+    injector.map<TasksCubit>(
+      (i) => TasksCubit(
+        taskService: i.get<TaskService>(),
+      ),
+      isSingleton: true,
+    );
 
     return injector;
   }

@@ -7,14 +7,14 @@ import 'package:nurse_diary/domain/repositories/category_repository.dart';
 part '../states/categories_state.dart';
 
 class CategoriesCubit extends Cubit<CategoriesState> {
-  final CategoryRepository _categoryRepository;
+  final CategoryRepository categoryRepository;
 
-  CategoriesCubit(this._categoryRepository) : super(CategoriesInitial());
+  CategoriesCubit({required this.categoryRepository}) : super(CategoriesInitial());
 
   Future<void> getCategories() async {
     emit(CategoriesLoading());
     try {
-      final categories = await _categoryRepository.getCategories();
+      final categories = await categoryRepository.getCategories();
       emit(CategoriesLoaded(categories: categories));
     } catch (e, stacktrace) {
       debugPrint('$e, $stacktrace');

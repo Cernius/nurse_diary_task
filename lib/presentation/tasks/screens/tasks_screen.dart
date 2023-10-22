@@ -24,7 +24,7 @@ class TasksScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              context.read<TasksCubit>().previousDay();
+              context.read<TasksCubit>().getPreviousDayTasks();
             },
             icon: const Icon(Icons.arrow_back_ios),
           ),
@@ -44,7 +44,7 @@ class TasksScreen extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              context.read<TasksCubit>().nextDay();
+              context.read<TasksCubit>().getNextDayTasks();
             },
             icon: const Icon(Icons.arrow_forward_ios),
           ),
@@ -63,7 +63,7 @@ class TasksScreen extends StatelessWidget {
                 return const Center(
                   child: Text("Failed to load tasks"),
                 );
-              } else if (state is TasksLoaded && state.filteredTasks == null) {
+              } else if (state is TasksLoaded && state.filteredTasks.isEmpty) {
                 return const Center(
                   child: Text("No tasks found"),
                 );
@@ -72,7 +72,7 @@ class TasksScreen extends StatelessWidget {
               return ListView.builder(
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  final task = state.filteredTasks![index];
+                  final task = state.filteredTasks[index];
                   return _BuildListTile(task: task);
                   // return ListTile(
                   //     title: Text(task.title),
@@ -93,7 +93,7 @@ class TasksScreen extends StatelessWidget {
                   //       },
                   //     ));
                 },
-                itemCount: state.filteredTasks!.length,
+                itemCount: state.filteredTasks.length,
               );
             },
           ),
@@ -106,7 +106,7 @@ class TasksScreen extends StatelessWidget {
 class _BuildListTile extends StatelessWidget {
   final Task task;
 
-  const _BuildListTile({super.key, required this.task});
+  const _BuildListTile({required this.task});
 
   @override
   Widget build(BuildContext context) {

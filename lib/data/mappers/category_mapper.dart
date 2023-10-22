@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:nurse_diary/data/models/category_dto.dart';
 import 'package:nurse_diary/domain/mappers/mapper.dart';
@@ -21,7 +20,7 @@ class CategoryMapper extends Mapper<CategoryDTO, Category> {
   }
 
   String mapToString(Category category) {
-    return '${category.name},${category.description},${category.color},${category.icon}';
+    return '${category.name},${category.description},${category.color.toHex()},${category.icon}';
   }
 
   List<Category> mapListFromString(String categoryString) {

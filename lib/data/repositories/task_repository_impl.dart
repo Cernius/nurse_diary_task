@@ -5,10 +5,10 @@ import 'package:nurse_diary/domain/repositories/task_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TaskRepositoryImpl extends TaskRepository {
-  final ServerApi _serverApi;
-  final TaskMapper _taskMapper;
+  final ServerApi serverApi;
+  final TaskMapper taskMapper;
 
-  TaskRepositoryImpl(this._serverApi, this._taskMapper);
+  TaskRepositoryImpl({required this.serverApi, required this.taskMapper});
 
   // Cache expiration time in milliseconds (1 hour).
   static const cacheDuration = 3600000;
@@ -25,16 +25,16 @@ class TaskRepositoryImpl extends TaskRepository {
 
       if (currentTime - cachedTimestamp < cacheDuration) {
         // Cache is still valid; return the cached data.
-        final tasks = _taskMapper.mapListFromString(cachedData);
+        final tasks = taskMapper.mapListFromString(cachedData);
         return tasks;
       }
     }
 
     try {
-      final tasks = await _serverApi.getTasks();
-      final mappedTasks = tasks.map((e) => _taskMapper.map(e)).toList();
+      final tasks = await serverApi.getTasks();
+      final mappedTasks = tasks.map((e) => taskMapper.map(e)).toList();
       // Cache the data and update the timestamp.
-      prefs.setString(_cacheKey, _taskMapper.mapListToString(mappedTasks));
+      prefs.setString(_cacheKey, taskMapper.mapListToString(mappedTasks));
       prefs.setInt('${_cacheKey}_timestamp', DateTime.now().millisecondsSinceEpoch);
 
       return mappedTasks;
@@ -42,7 +42,7 @@ class TaskRepositoryImpl extends TaskRepository {
       // Handle the error, possibly by falling back to cached data.
       print('Error fetching data: $error');
       if (cachedData != null) {
-        return _taskMapper.mapListFromString(cachedData);
+        return taskMapper.mapListFromString(cachedData);
       } else {
         // Handle the case when there is no cached data and an error occurs.
         rethrow;
@@ -51,7 +51,7 @@ class TaskRepositoryImpl extends TaskRepository {
   }
 
   @override
-  Future<List<Task>> getTasksByCategory(String category) async {
+  Future<List<Task>> getTasksByCategory({required String category}) async {
     final tasks = await getTasks();
     final filteredTasks = tasks.where((element) => element.category == category).toList();
     filteredTasks.sort((a, b) => a.deadline.compareTo(b.deadline));
@@ -59,12 +59,12 @@ class TaskRepositoryImpl extends TaskRepository {
   }
 
   @override
-  void completeTask(Task task) async {
+  Future<void> completeTask({required Task task}) async {
     final tasks = await getTasks();
     final index = tasks.indexWhere((element) => element.title == task.title);
     tasks.removeAt(index);
     tasks.insert(index, task);
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_cacheKey, _taskMapper.mapListToString(tasks));
+    await prefs.setString(_cacheKey, taskMapper.mapListToString(tasks));
   }
 }

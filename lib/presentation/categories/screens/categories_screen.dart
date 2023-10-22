@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nurse_diary/common/app_module.dart';
 import 'package:nurse_diary/domain/models/category.dart';
 import 'package:nurse_diary/presentation/categories/bloc/categories_cubit.dart';
 import 'package:nurse_diary/presentation/common/widgets/list_tile_widget.dart';
 import 'package:nurse_diary/presentation/tasks/bloc/tasks_cubit.dart';
 import 'package:nurse_diary/presentation/tasks/screens/tasks_screen.dart';
 
-class CategoriesScreen extends StatelessWidget {
+class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({Key? key}) : super(key: key);
+
+  @override
+  State<CategoriesScreen> createState() => _CategoriesScreenState();
+}
+
+class _CategoriesScreenState extends State<CategoriesScreen> {
+  @override
+  initState() {
+    super.initState();
+    context.read<CategoriesCubit>().getCategories();
+  }
 
   @override
   Widget build(BuildContext context) {

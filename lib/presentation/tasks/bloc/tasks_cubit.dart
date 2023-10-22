@@ -2,40 +2,24 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nurse_diary/domain/models/task.dart';
-import 'package:nurse_diary/domain/repositories/task_repository.dart';
-import 'package:nurse_diary/presentation/common/utils/extenions.dart';
+import 'package:nurse_diary/domain/services/task_service.dart';
 
 part '../state/tasks_state.dart';
 
 class TasksCubit extends Cubit<TasksState> {
-  final TaskRepository _taskRepository;
+  final TaskService taskService;
 
-  TasksCubit(this._taskRepository) : super(TasksInitial());
-
-  Future<void> getTasks() async {
-    emit(TasksLoading(selectedDay: state.selectedDay));
-    try {
-      final tasks = await _taskRepository.getTasks();
-      emit(TasksLoaded(
-        tasks: tasks,
-        version: state.version,
-      ));
-    } catch (e, stacktrace) {
-      debugPrint('$e, $stacktrace');
-      emit(TasksFailure());
-    }
-  }
+  TasksCubit({required this.taskService}) : super(TasksInitial());
 
   Future<void> getTasksByCategory(String category) async {
     emit(TasksLoading(selectedDay: state.selectedDay));
     try {
-      final tasks = await _taskRepository.getTasksByCategory(category);
-      final filteredTasks =
-          tasks.where((task) => task.deadline.isSameDay(state.selectedDay)).toList();
-      filteredTasks.sort((a, b) => a.deadline.compareTo(b.deadline));
+      final filteredTasks = await taskService.getTasksByCategory(
+        category: category,
+        selectedDay: state.selectedDay,
+      );
       emit(
         TasksLoaded(
-          tasks: state.tasks,
           filteredTasks: filteredTasks,
           selectedDay: state.selectedDay,
           category: category,
@@ -48,46 +32,49 @@ class TasksCubit extends Cubit<TasksState> {
     }
   }
 
-  Task completeTask(Task task) {
+  Future<void> completeTask(Task task) async {
     try {
-      final completedTask = task.copyWith(completedAt: DateTime.now());
-
-      _taskRepository.completeTask(completedTask);
-
       if (state is TasksLoaded) {
-        final filteredTasks = (state as TasksLoaded).filteredTasks ?? [];
-        final index = filteredTasks.indexWhere((task) => task.title == completedTask.title);
-        filteredTasks.removeAt(index);
-        filteredTasks.insert(index, completedTask);
-        filteredTasks.sort((a, b) => a.completedAt != null ? 1 : -1);
-        emit((state as TasksLoaded).copyWith(
-          filteredTasks: filteredTasks,
-          version: state.version + 1,
-        ));
-        return completedTask;
+        final tasks = await taskService.completeTask(
+          task: task,
+          tasks: state.filteredTasks,
+        );
+
+        emit(
+          (state as TasksLoaded).copyWith(
+            filteredTasks: tasks,
+            version: state.version + 1,
+          ),
+        );
       }
-      throw ();
     } catch (e, stacktrace) {
       debugPrint('$e, $stacktrace');
+      print('catch');
       emit(TasksFailure());
-      return task;
     }
   }
 
-  void nextDay() {
+  void getNextDayTasks() {
+    if (state.category == null) {
+      emit(TasksFailure());
+      return;
+    }
     if (state is TasksLoaded) {
-      final nextDay = (state as TasksLoaded).selectedDay.add(const Duration(days: 1));
+      final nextDay = state.selectedDay.add(const Duration(days: 1));
       emit((state as TasksLoaded).copyWith(selectedDay: nextDay));
-
-      getTasksByCategory((state as TasksLoaded).category!);
+      getTasksByCategory(state.category!);
     }
   }
 
-  void previousDay() {
+  void getPreviousDayTasks() {
+    if (state.category == null) {
+      emit(TasksFailure());
+      return;
+    }
     if (state is TasksLoaded) {
-      final previousDay = (state as TasksLoaded).selectedDay.subtract(const Duration(days: 1));
+      final previousDay = state.selectedDay.subtract(const Duration(days: 1));
       emit((state as TasksLoaded).copyWith(selectedDay: previousDay));
-      getTasksByCategory((state as TasksLoaded).category!);
+      getTasksByCategory(state.category!);
     }
   }
 }

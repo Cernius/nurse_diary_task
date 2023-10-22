@@ -7,16 +7,16 @@ import 'package:nurse_diary/domain/repositories/preference_repository.dart';
 import 'package:nurse_diary/domain/services/logger.dart';
 
 class ServerApi {
-  final PreferenceRepository _preferenceRepository;
-  final Logger _logger;
+  final PreferenceRepository preferenceRepository;
+  final Logger logger;
 
-  ServerApi(this._preferenceRepository, this._logger);
+  ServerApi({required this.preferenceRepository, required this.logger});
 
   Future<http.Response> getData(
     String endpoint, {
     Map<String, String>? query,
   }) async {
-    Uri url = Uri.http(_preferenceRepository.getServerUrl(), endpoint, query);
+    Uri url = Uri.http(preferenceRepository.getServerUrl(), endpoint, query);
     dynamic response;
 
     response = await http.get(url);
@@ -26,7 +26,7 @@ class ServerApi {
 
   Future<http.Response> post(String endpoint,
       {required String body, bool loginHeaders = false, Map<String, dynamic>? queryParams}) async {
-    Uri url = Uri.http(_preferenceRepository.getServerUrl(), endpoint, queryParams);
+    Uri url = Uri.http(preferenceRepository.getServerUrl(), endpoint, queryParams);
     http.Response response = http.Response('Error', 404);
 
     response = await http.post(
@@ -51,7 +51,7 @@ class ServerApi {
     return getData('tasks').then((response) {
       final list = json.decode(response.body);
 
-      _logger.d(list);
+      logger.d(list);
       return list['tasks'].map<TaskDTO>((e) => TaskDTO.fromJson(e)).toList();
     });
   }

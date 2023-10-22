@@ -29,7 +29,7 @@ void main() {
 
     setUp(() async {
       repository = MockCategoriesRepository();
-      categoriesBloc = CategoriesCubit(repository);
+      categoriesBloc = CategoriesCubit(categoryRepository: repository);
     });
 
     test('Initial State is CategoriesInitial', () {
